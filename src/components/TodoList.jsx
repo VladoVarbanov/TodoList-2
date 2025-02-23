@@ -2,18 +2,32 @@ import React from "react";
 import TodoCard from "./TodoCard.jsx";
 
 export default function TodoList(props) {
-  const { todos } = props;
-  const tab = "All";
+  const { selectedTab, todos } = props;
   const filterTodosList =
-    tab === "All"
+    selectedTab === "All"
       ? todos
-      : tab === "Complete"
+      : selectedTab === "Completed"
       ? todos.filter((val) => val.complete)
       : todos.filter((val) => !val.complete);
+
   return (
     <>
       {filterTodosList.map((todo, todoIndex) => {
-        return <TodoCard key={todoIndex} todo={todo} />;
+        let realIndex;
+        todos.find((val, valIndex) => {
+          if (val.input === todo.input) {
+            realIndex = valIndex;
+          }
+        });
+
+        return (
+          <TodoCard
+            key={todoIndex}
+            todo={todo}
+            todoIndex={realIndex}
+            {...props}
+          />
+        );
       })}
     </>
   );
