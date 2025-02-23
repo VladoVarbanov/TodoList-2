@@ -17,14 +17,18 @@ function App() {
   function handleAddTodo(newTodo) {
     const newTodoList = [...todos, { input: newTodo, complete: false }];
     setTodos(newTodoList);
+    handleSaveData(newTodoList);
   }
 
   function handleCompleteTodo(index) {
+    console.log(index);
+
     let newTodoList = [...todos];
     let completedTodo = todos[index];
     completedTodo["complete"] = true;
     newTodoList[index] = completedTodo;
     setTodos(newTodoList);
+    handleSaveData(newTodoList);
   }
 
   function handleDeleteTodo(index) {
@@ -32,7 +36,18 @@ function App() {
       return valIndex !== index;
     });
     setTodos(newTodoList);
+    handleSaveData(newTodoList);
   }
+
+  function handleSaveData(currTodos) {
+    localStorage.setItem("todo-db", JSON.stringify({ todos: currTodos }));
+  }
+
+  useEffect(() => {
+    if (!localStorage || !localStorage.getItem("todo-db")) return;
+    let db = JSON.parse(localStorage.getItem("todo-db"));
+    setTodos(db.todos);
+  }, []);
 
   return (
     <>

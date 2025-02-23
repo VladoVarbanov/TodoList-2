@@ -13,18 +13,13 @@ export default function TodoList(props) {
   return (
     <>
       {filterTodosList.map((todo, todoIndex) => {
-        let realIndex;
-        todos.find((val, valIndex) => {
-          if (val.input === todo.input) {
-            realIndex = valIndex;
-          }
-        });
-
         return (
           <TodoCard
             key={todoIndex}
             todo={todo}
-            todoIndex={realIndex}
+            todoIndex={todos.findIndex((val) => {
+              return val.input == todo.input;
+            })}
             {...props}
           />
         );
